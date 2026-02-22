@@ -7,4 +7,10 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include=".github\docs\branching-strategy.md" />
+    <None Include=".github\docs\setup-instructions.md" />
+    <None Include=".github\workflows\branch-protection.yml" />
+  </ItemGroup>
+
 </Project>
