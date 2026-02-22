@@ -1,0 +1,67 @@
+name: Branch Protection
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR Branch Rules
+        id: validate
+        run: |
+          BASE_BRANCH="${{ github.base_ref }}"
+          HEAD_BRANCH="${{ github.head_ref }}"
+          
+          echo "Base branch: $BASE_BRANCH"
+          echo "Head branch: $HEAD_BRANCH"
+          
+          # Rule 1: Only develop can PR to main
+          if [[ "$BASE_BRANCH" == "main" ]]; then
+            if [[ "$HEAD_BRANCH" != "develop" ]]; then
+              echo "❌ ERROR: Only the 'develop' branch can create PRs to 'main'"
+              echo "Current source branch: $HEAD_BRANCH"
+              echo "valid=false" >> $GITHUB_OUTPUT
+              echo "message=❌ **Invalid Pull Request**\n\nOnly the \`develop\` branch can be merged into \`main\`.\n\n**Your branch:** \`$HEAD_BRANCH\`\n\n**Required workflow:**\n1. Create a feature branch: \`feature/your-feature-name\`\n2. PR your feature branch to \`develop\`\n3. Once merged to \`develop\`, create a PR from \`develop\` to \`main\`" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          fi
+          
+          # Rule 2: Only feature/* branches can PR to develop
+          if [[ "$BASE_BRANCH" == "develop" ]]; then
+            if [[ ! "$HEAD_BRANCH" =~ ^feature/ ]]; then
+              echo "❌ ERROR: Only 'feature/*' branches can create PRs to 'develop'"
+              echo "Current source branch: $HEAD_BRANCH"
+              echo "valid=false" >> $GITHUB_OUTPUT
+              echo "message=❌ **Invalid Pull Request**\n\nOnly branches starting with \`feature/\` can be merged into \`develop\`.\n\n**Your branch:** \`$HEAD_BRANCH\`\n\n**Required workflow:**\n1. Create your feature branch with the correct naming: \`feature/your-feature-name\`\n2. Make your changes on the feature branch\n3. Create a PR from your feature branch to \`develop\`" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          fi
+          
+          echo "✅ PR branch rules validated successfully"
+          echo "valid=true" >> $GITHUB_OUTPUT
+
+      - name: Comment on Invalid PR
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${{ steps.validate.outputs.message }}`
+            })
+
+      - name: Comment on Valid PR
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ **Branch validation passed!** This PR follows the correct branching workflow.'
+            })
