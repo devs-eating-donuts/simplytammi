@@ -13,4 +13,14 @@
     <None Include=".github\workflows\branch-protection.yml" />
   </ItemGroup>
 
+  <!-- npm/Tailwind CSS Integration - Optional (manual setup required) -->
+  <!-- To enable automatic builds, ensure npm is in PATH and run: npm install -->
+  <Target Name="NpmInstall" BeforeTargets="Build" Condition="'$(SKIP_NPM_BUILD)' != 'true'">
+    <Exec Command="cmd /c npm install" ContinueOnError="true" />
+  </Target>
+
+  <Target Name="BuildTailwind" AfterTargets="NpmInstall" BeforeTargets="Build" Condition="'$(SKIP_NPM_BUILD)' != 'true'">
+    <Exec Command="cmd /c npm run build:css" ContinueOnError="true" />
+  </Target>
+
 </Project>

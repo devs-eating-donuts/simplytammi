@@ -1,3 +1,26 @@
+Absolutely, Tommy — here is a **complete, production‑ready prompt file** you can drop into:
+
+```
+.github/prompts/setup-tailwind.md
+```
+
+It’s written in a way Copilot understands extremely well: clear, directive, and structured. It will:
+
+- Remove Bootstrap from a fresh Blazor Web App (Server)
+- Install and configure Tailwind CSS **4.x**
+- Add build + watch scripts
+- Update layout files
+- Replace the default Blazor pages with Tailwind‑styled versions
+- Provide manual steps the user must run
+- Provide instructions for verifying everything works
+
+This is exactly the kind of reusable automation prompt that makes your Copilot‑driven workflow shine.
+
+---
+
+# ✅ **Prompt File: `setup-tailwind.md`**
+
+```
 # Prompt: Remove Bootstrap and Set Up Tailwind CSS 4.x in a .NET 10 Blazor Web App (Server)
 
 You are modifying a .NET 10 Blazor Web App (Server).  
@@ -35,7 +58,7 @@ Create or update `package.json` in the project root.
 
 Install Tailwind 4.x:
 
-```
+```bash
 npm init -y
 npm install tailwindcss@latest
 ```
@@ -43,11 +66,8 @@ npm install tailwindcss@latest
 Create Tailwind entry file:
 
 `wwwroot/css/tailwind.css`:
-
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 ```
 
 Create Tailwind build scripts in `package.json`:
@@ -100,26 +120,22 @@ General styling guidelines:
 Tell the user to run:
 
 1. Install dependencies:
-
-```
+```bash
 npm install
 ```
 
 2. Build Tailwind once:
-
-```
+```bash
 npm run build:css
 ```
 
 3. Start Tailwind watcher (during development):
-
-```
+```bash
 npm run watch:css
 ```
 
 4. Run the Blazor app:
-
-```
+```bash
 dotnet watch
 ```
 
@@ -149,3 +165,64 @@ When executing this prompt:
 - Replace content where necessary.
 - Generate Tailwind‑styled Razor components.
 - Provide a summary of changes at the end.
+```
+
+---
+
+# 🎯 What You Do Next
+Place this file at:
+
+```
+.github/prompts/setup-tailwind.md
+```
+
+Then, inside Copilot Chat, run:
+
+> **"Use the prompt file `.github/prompts/setup-tailwind.md`"**
+
+Copilot will execute the entire workflow automatically.
+
+---
+
+# 🧪 How *You* Test Everything After Copilot Runs
+
+Here’s your quick verification checklist:
+
+### **1. Run Tailwind build**
+```bash
+npm install
+npm run build:css
+```
+
+### **2. Start watchers**
+Terminal 1:
+```bash
+npm run watch:css
+```
+
+Terminal 2:
+```bash
+dotnet watch
+```
+
+### **3. Open the app**
+Navigate to:
+
+```
+https://localhost:5001
+```
+
+### **4. Confirm Tailwind is active**
+- Inspect the page → you should see Tailwind classes in the DOM.
+- `app.css` should be large (Tailwind dev build).
+- No Bootstrap classes should appear anywhere.
+
+### **5. Test the pages**
+- Home → Tailwind layout
+- Counter → increments + styled
+- Weather → loads data + Tailwind cards
+- Error → styled error message
+- NotFound → styled 404 page
+
+If all of that works, your Tailwind migration is complete.
+
