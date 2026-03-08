@@ -1,0 +1,178 @@
+@rendermode InteractiveServer
+@using SimplyTammi.Models
+@using SimplyTammi.Services
+@inject IConfiguration Configuration
+@inject IEmailService EmailService
+@inject IJSRuntime JS
+@inject ITurnstileVerificationService TurnstileVerificationService
+@inject IContactSubmissionGuard ContactSubmissionGuard
+
+<section id="contact" class="mx-auto max-w-6xl px-4 py-12">
+    <div class="max-w-2xl">
+        <h2 class="text-2xl font-semibold">Get in Touch</h2>
+        <p class="mt-2 text-neutral-400">
+            Have a project in mind? Drop a message and I'll get back to you.
+        </p>
+    </div>
+
+    <div class="mt-8 card p-8 max-w-xl">
+        @if (submitted)
+        {
+            <div class="text-center py-8">
+                <p class="text-lg font-semibold">Thank you!</p>
+                <p class="mt-2 text-neutral-400">Your message has been sent. I'll be in touch soon.</p>
+                <button class="btn btn-ghost mt-6" @onclick="Reset">Send another message</button>
+            </div>
+        }
+        else if (errorMessage is not null)
+        {
+            <div class="text-center py-8">
+                <p class="text-lg font-semibold text-red-400">Something went wrong</p>
+                <p class="mt-2 text-neutral-400">@errorMessage</p>
+                <button class="btn btn-ghost mt-6" @onclick="Reset">Try again</button>
+            </div>
+        }
+        else
+        {
+            <EditForm Model="formModel" OnValidSubmit="HandleSubmit" FormName="contact">
+                <DataAnnotationsValidator />
+
+                <div class="flex flex-col gap-5">
+                    <div>
+                        <label class="block text-sm font-medium mb-1" for="name">Name</label>
+                        <InputText id="name" @bind-Value="formModel.Name"
+                                   class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none"
+                                   placeholder="Your name" />
+                        <ValidationMessage For="() => formModel.Name" class="text-red-400 text-sm mt-1" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1" for="email">Email</label>
+                        <InputText id="email" @bind-Value="formModel.Email"
+                                   class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none"
+                                   placeholder="you@example.com" />
+                        <ValidationMessage For="() => formModel.Email" class="text-red-400 text-sm mt-1" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1" for="message">Message</label>
+                        <InputTextArea id="message" @bind-Value="formModel.Message" rows="5"
+                                       class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none resize-none"
+                                       placeholder="Tell me about your project..." />
+                        <ValidationMessage For="() => formModel.Message" class="text-red-400 text-sm mt-1" />
+                    </div>
+
+                    <div class="hidden" aria-hidden="true">
+                        <label for="website">Website</label>
+                        <InputText id="website" @bind-Value="formModel.Website" autocomplete="off" tabindex="-1" />
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(turnstileSiteKey))
+                    {
+                        <div id="turnstile-container"></div>
+                    }
+                    else
+                    {
+                        <p class="text-red-400 text-sm">Captcha is not configured. Please contact support.</p>
+                    }
+
+                    <button type="submit" class="btn btn-primary w-full" disabled="@sending">
+                        @(sending ? "Sending..." : "Send Message")
+                    </button>
+                </div>
+            </EditForm>
+        }
+    </div>
+</section>
+
+@code {
+    private static readonly TimeSpan MinimumSubmitDelay = TimeSpan.FromSeconds(3);
+
+    private readonly DateTimeOffset formLoadedAtUtc = DateTimeOffset.UtcNow;
+
+    private string? turnstileSiteKey;
+    private ContactFormModel formModel = new();
+    private bool sending;
+    private bool submitted;
+    private string? errorMessage;
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        turnstileSiteKey = Configuration["Turnstile:SiteKey"];
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !string.IsNullOrWhiteSpace(turnstileSiteKey))
+        {
+            await JS.InvokeVoidAsync("simplyTammiContact.renderTurnstile", turnstileSiteKey);
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        sending = true;
+        errorMessage = null;
+
+        if (!string.IsNullOrWhiteSpace(formModel.Website))
+        {
+            errorMessage = "Unable to send your message right now. Please try again later.";
+            sending = false;
+            return;
+        }
+
+        if (DateTimeOffset.UtcNow - formLoadedAtUtc < MinimumSubmitDelay)
+        {
+            errorMessage = "Please wait a moment before submitting.";
+            sending = false;
+            return;
+        }
+
+        if (!ContactSubmissionGuard.IsAllowed(formModel.Email))
+        {
+            errorMessage = "Too many requests. Please wait a few minutes and try again.";
+            sending = false;
+            return;
+        }
+
+        var turnstileToken = await JS.InvokeAsync<string>("simplyTammiContact.getTurnstileToken");
+
+        if (string.IsNullOrWhiteSpace(turnstileToken))
+        {
+            errorMessage = "Captcha verification failed. Please retry.";
+            sending = false;
+            return;
+        }
+
+        var turnstileResult = await TurnstileVerificationService.VerifyAsync(turnstileToken);
+
+        if (!turnstileResult.Success)
+        {
+            errorMessage = "Captcha verification failed. Please retry.";
+            sending = false;
+            return;
+        }
+
+        var success = await EmailService.SendContactEmailAsync(formModel);
+
+        if (success)
+        {
+            submitted = true;
+        }
+        else
+        {
+            errorMessage = "Unable to send your message right now. Please try again later.";
+        }
+
+        sending = false;
+    }
+
+    private void Reset()
+    {
+        formModel = new();
+        submitted = false;
+        errorMessage = null;
+    }
+}
