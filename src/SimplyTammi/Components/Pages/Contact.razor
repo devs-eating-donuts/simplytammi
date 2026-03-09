@@ -7,15 +7,15 @@
 @inject ITurnstileVerificationService TurnstileVerificationService
 @inject IContactSubmissionGuard ContactSubmissionGuard
 
-<section id="contact" class="mx-auto max-w-6xl px-4 py-12">
+<section id="contact" class="scroll-mt-16 mx-auto max-w-6xl px-4 py-12">
     <div class="max-w-2xl">
         <h2 class="text-2xl font-semibold">Get in Touch</h2>
         <p class="mt-2 text-neutral-400">
-            Have a project in mind? Drop a message and I'll get back to you.
+            I’d love to hear from you. Whether you’re reaching out about an image or simply saying hello, feel free to send a message.
         </p>
     </div>
 
-    <div class="mt-8 card p-8 max-w-xl">
+    <div class="mt-8 card max-w-xl p-5 sm:p-6 md:p-8">
         @if (submitted)
         {
             <div class="text-center py-8">
@@ -58,7 +58,7 @@
                         <label class="block text-sm font-medium mb-1" for="message">Message</label>
                         <InputTextArea id="message" @bind-Value="formModel.Message" rows="5"
                                        class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none resize-none"
-                                       placeholder="Tell me about your project..." />
+                                       placeholder="Say hello or ask about an image..." />
                         <ValidationMessage For="() => formModel.Message" class="text-red-400 text-sm mt-1" />
                     </div>
 
@@ -76,12 +76,16 @@
                         <p class="text-red-400 text-sm">Captcha is not configured. Please contact support.</p>
                     }
 
+                    <p class="text-sm leading-relaxed text-neutral-500">
+                        Any information you share here will only be used to respond to your message.
+                        It will never be sold, shared, or used for anything else.
+                    </p>
+
                     <button type="submit" class="btn btn-primary w-full" disabled="@sending">
                         @(sending ? "Sending..." : "Send Message")
                     </button>
                 </div>
-            </EditForm>
-        }
+            </EditForm>        }
     </div>
 </section>
 
