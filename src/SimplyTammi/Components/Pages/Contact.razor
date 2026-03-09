@@ -41,7 +41,7 @@
                     <div>
                         <label class="block text-sm font-medium mb-1" for="name">Name</label>
                         <InputText id="name" @bind-Value="formModel.Name"
-                                   class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none"
+                                   class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-base text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none"
                                    placeholder="Your name" />
                         <ValidationMessage For="() => formModel.Name" class="text-red-400 text-sm mt-1" />
                     </div>
@@ -49,7 +49,7 @@
                     <div>
                         <label class="block text-sm font-medium mb-1" for="email">Email</label>
                         <InputText id="email" @bind-Value="formModel.Email"
-                                   class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none"
+                                   class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-base text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none"
                                    placeholder="you@example.com" />
                         <ValidationMessage For="() => formModel.Email" class="text-red-400 text-sm mt-1" />
                     </div>
@@ -57,7 +57,7 @@
                     <div>
                         <label class="block text-sm font-medium mb-1" for="message">Message</label>
                         <InputTextArea id="message" @bind-Value="formModel.Message" rows="5"
-                                       class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none resize-none"
+                                       class="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-base text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none resize-none"
                                        placeholder="Say hello or ask about an image..." />
                         <ValidationMessage For="() => formModel.Message" class="text-red-400 text-sm mt-1" />
                     </div>
