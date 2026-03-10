@@ -1,0 +1,74 @@
+﻿@rendermode InteractiveServer
+
+<section id="gallery" class="scroll-mt-16 mx-auto max-w-6xl px-4 py-12">
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+            <h2 class="text-2xl font-semibold">Featured Work</h2>
+            <p class="mt-2 text-neutral-400">A selection of images from nature, travel, animals, and black and white photography.</p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+            @foreach (var t in tabs)
+            {
+                <button class="btn @(active == t ? "btn-primary" : "btn-ghost")"
+                        @onclick="() => active = t">
+                    @t
+                </button>
+            }
+        </div>
+    </div>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        @foreach (var s in Filtered)
+        {
+            <article class="group overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-sm">
+                <div class="aspect-[4/3] overflow-hidden">
+                    <img class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                         src="@s.Src" alt="@s.Title" />
+                </div>
+                <div class="p-4">
+                    <p class="text-xs uppercase tracking-[0.2em] text-neutral-400">@s.Category</p>
+                    <h3 class="mt-1 font-semibold">@s.Title</h3>
+                </div>
+            </article>
+        }
+    </div>
+</section>
+
+@code {
+    private string active = "All";
+
+    private readonly (string Title, string Category, string Src)[] shots =
+    [
+      ("On the Lookout", "Animals", "images/gotg.jpg"),
+    ("Air Force Chapel - Side View", "Travel", "images/afchapel.jpeg"),
+    ("Chicago", "Travel", "images/chicago.jpg"),
+    ("Las Vegas", "Travel", "images/lasvegas.jpeg"),
+    ("Garden of the Gods - Spring", "Nature", "images/gotg2.jpg"),
+    ("Frozen in Time", "Black and White", "images/winter.jpg"),
+    ("Air Force Chapel - Wide View", "Travel", "images/afchapelwide.jpeg"),
+    ("The Pack", "Animals", "images/dogs.jpg"),
+    ("Garden of the Gods - Hole", "Nature", "images/gotghole.jpeg"),
+    ("Tea", "Travel", "images/teaset.jpeg"),
+    ("Garden of the Gods - Majestic", "Nature", "images/gotgsnow.jpeg"),
+    ("Garden of the Gods - Winter", "Nature", "images/gotgwinter.jpg"),
+    ("Parched", "Nature, Animals", "images/lake.jpeg"),
+    ("Before the Storm", "Nature", "images/field.jpeg"),
+    ("Learning to Swim", "Animals", "images/turtles.jpg"),
+    ("Air Force Chapel - Ceiling", "Travel", "images/afchapelroof.jpg"),
+    ("Aspens in the Fall", "Nature", "images/aspens.jpg"),
+    ("Bitter Cold", "Black and White, Nature", "images/winter2.jpg"),
+    ("Frosting Over", "Black and White, Nature", "images/winteralone.jpg"),
+    ("Tree all Alone", "Black and White, Nature", "images/wintertree.jpg"),
+    ("Take Off", "Travel, Nature", "images/balloons.jpg"),
+    ("A Bird", "Animals", "images/bird.jpg"),
+    ("Time to Fall", "Nature", "images/leaves.jpg"),
+    ("Air Force Chapel - Ceiling 2", "Travel", "images/afchapelceiling.jpg"),
+    ("In Flight", "Travel", "images/balloon.jpg"),
+  ];
+
+    private IEnumerable<(string Title, string Category, string Src)> Filtered =>
+      active == "All" ? shots : shots.Where(s => s.Category.Split(',', StringSplitOptions.TrimEntries).Contains(active));
+
+    private string[] tabs = ["All", "Black and White", "Nature", "Animals", "Travel"];
+}

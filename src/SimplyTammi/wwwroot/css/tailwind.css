@@ -1,2 +1,28 @@
 @import "tailwindcss";
 @source "../../Components";
+
+@layer base {
+  h1:focus-visible,
+  h2:focus-visible,
+  h3:focus-visible {
+    outline: none;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-neutral-700 bg-neutral-900;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition;
+  }
+
+  .btn-primary {
+    @apply bg-white text-neutral-950 hover:bg-neutral-200;
+  }
+
+  .btn-ghost {
+    @apply border border-neutral-600 text-neutral-300 hover:border-neutral-400 hover:text-neutral-100;
+  }
+}
