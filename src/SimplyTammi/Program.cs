@@ -1,10 +1,17 @@
 using SimplyTammi.Components;
+using SimplyTammi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient<ITurnstileVerificationService, TurnstileVerificationService>();
+builder.Services.AddSingleton<IContactSubmissionGuard, ContactSubmissionGuard>();
+builder.Services.AddScoped<IEmailService, PostmarkEmailService>();
 
 var app = builder.Build();
 

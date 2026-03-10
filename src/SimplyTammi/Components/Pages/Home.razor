@@ -1,41 +1,17 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>simplytammi</PageTitle>
 
-<div class="space-y-8">
-    <section class="text-center py-12">
-        <h1 class="text-5xl font-bold text-gray-900 mb-4">Welcome to SimplyTammi</h1>
-        <p class="text-xl text-gray-600 mb-8">Build modern, responsive web applications with Blazor and Tailwind CSS</p>
-        <a href="counter" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
-            Get Started &rarr;
-        </a>
-    </section>
+<div class="min-h-screen">
+    <SiteNav />
 
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-indigo-600">
-            <h3 class="text-xl font-bold text-gray-900 mb-2">⚡ Fast &amp; Responsive</h3>
-            <p class="text-gray-600">Server-side rendering with real-time interactivity using Blazor Web App.</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-600">
-            <h3 class="text-xl font-bold text-gray-900 mb-2">🎨 Beautiful UI</h3>
-            <p class="text-gray-600">Tailwind CSS provides a utility-first approach to creating stunning designs.</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-600">
-            <h3 class="text-xl font-bold text-gray-900 mb-2">🔧 Developer Friendly</h3>
-            <p class="text-gray-600">Clean architecture with C# 13 and .NET 10 best practices.</p>
-        </div>
-    </section>
+    <main>
+        <Hero />
+        <Focus />
+        <SelectImages />
+        <Contact />
+        @*<AboutMe /> *@
+    </main>
 
-    <section class="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-xl shadow-lg p-8 text-white">
-        <h2 class="text-3xl font-bold mb-4">Ready to Build?</h2>
-        <p class="text-lg mb-6">Explore the counter and weather examples to see Blazor in action.</p>
-        <div class="flex gap-4">
-            <a href="counter" class="bg-white text-indigo-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
-                Counter Demo
-            </a>
-            <a href="weather" class="border-2 border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-white hover:text-indigo-600 transition">
-                Weather Demo
-            </a>
-        </div>
-    </section>
-</div>
+    @*   <SiteFooter />
+ *@</div>
