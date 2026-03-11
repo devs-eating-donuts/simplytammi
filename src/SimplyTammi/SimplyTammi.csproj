@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\imageresize.ps1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include=".github\docs\branching-strategy.md" />
     <None Include=".github\docs\setup-instructions.md" />
     <None Include=".github\workflows\branch-protection.yml" />
