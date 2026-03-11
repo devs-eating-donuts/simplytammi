@@ -1,4 +1,5 @@
 ﻿@rendermode InteractiveServer
+@using SimplyTammi.Models
 
 <section id="gallery" class="scroll-mt-16 mx-auto max-w-6xl px-4 py-12">
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -24,7 +25,7 @@
             <article class="group overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900 shadow-sm">
                 <div class="aspect-[4/3] overflow-hidden">
                     <img class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                         src="@s.Src" alt="@s.Title" />
+                         src="@s.ThumbUrl" alt="@s.Title" />
                 </div>
                 <div class="p-4">
                     <p class="text-xs uppercase tracking-[0.2em] text-neutral-400">@s.Category</p>
@@ -38,37 +39,37 @@
 @code {
     private string active = "All";
 
-    private readonly (string Title, string Category, string Src)[] shots =
+    private readonly GalleryImage[] shots =
     [
-      ("On the Lookout", "Animals", "images/gotg.jpg"),
-    ("Air Force Chapel - Side View", "Travel", "images/afchapel.jpeg"),
-    ("Chicago", "Travel", "images/chicago.jpg"),
-    ("Las Vegas", "Travel", "images/lasvegas.jpeg"),
-    ("Garden of the Gods - Spring", "Nature", "images/gotg2.jpg"),
-    ("Frozen in Time", "Black and White", "images/winter.jpg"),
-    ("Air Force Chapel - Wide View", "Travel", "images/afchapelwide.jpeg"),
-    ("The Pack", "Animals", "images/dogs.jpg"),
-    ("Garden of the Gods - Hole", "Nature", "images/gotghole.jpeg"),
-    ("Tea", "Travel", "images/teaset.jpeg"),
-    ("Garden of the Gods - Majestic", "Nature", "images/gotgsnow.jpeg"),
-    ("Garden of the Gods - Winter", "Nature", "images/gotgwinter.jpg"),
-    ("Parched", "Nature, Animals", "images/lake.jpeg"),
-    ("Before the Storm", "Nature", "images/field.jpeg"),
-    ("Learning to Swim", "Animals", "images/turtles.jpg"),
-    ("Air Force Chapel - Ceiling", "Travel", "images/afchapelroof.jpg"),
-    ("Aspens in the Fall", "Nature", "images/aspens.jpg"),
-    ("Bitter Cold", "Black and White, Nature", "images/winter2.jpg"),
-    ("Frosting Over", "Black and White, Nature", "images/winteralone.jpg"),
-    ("Tree all Alone", "Black and White, Nature", "images/wintertree.jpg"),
-    ("Take Off", "Travel, Nature", "images/balloons.jpg"),
-    ("A Bird", "Animals", "images/bird.jpg"),
-    ("Time to Fall", "Nature", "images/leaves.jpg"),
-    ("Air Force Chapel - Ceiling 2", "Travel", "images/afchapelceiling.jpg"),
-    ("In Flight", "Travel", "images/balloon.jpg"),
-  ];
+        new() { Id = "gotg",             Title = "On the Lookout",               Category = "Animals",               ThumbUrl = "images/gotg.jpg",            MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "afchapel",         Title = "Air Force Chapel - Side View", Category = "Travel",                ThumbUrl = "images/afchapel.jpeg",       MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "chicago",          Title = "Chicago",                      Category = "Travel",                ThumbUrl = "images/chicago.jpg",         MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "lasvegas",         Title = "Las Vegas",                    Category = "Travel",                ThumbUrl = "images/lasvegas.jpeg",       MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "gotg2",            Title = "Garden of the Gods - Spring",  Category = "Nature",                ThumbUrl = "images/gotg2.jpg",           MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "winter",           Title = "Frozen in Time",               Category = "Black and White",       ThumbUrl = "images/winter.jpg",          MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "afchapelwide",     Title = "Air Force Chapel - Wide View", Category = "Travel",                ThumbUrl = "images/afchapelwide.jpeg",   MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "dogs",             Title = "The Pack",                     Category = "Animals",               ThumbUrl = "images/dogs.jpg",            MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "gotghole",         Title = "Garden of the Gods - Hole",    Category = "Nature",                ThumbUrl = "images/gotghole.jpeg",       MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "teaset",           Title = "Tea",                          Category = "Travel",                ThumbUrl = "images/teaset.jpeg",         MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "gotgsnow",         Title = "Garden of the Gods - Majestic",Category = "Nature",                ThumbUrl = "images/gotgsnow.jpeg",       MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "gotgwinter",       Title = "Garden of the Gods - Winter",  Category = "Nature",                ThumbUrl = "images/gotgwinter.jpg",      MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "lake",             Title = "Parched",                      Category = "Nature, Animals",       ThumbUrl = "images/lake.jpeg",           MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "field",            Title = "Before the Storm",             Category = "Nature",                ThumbUrl = "images/field.jpeg",          MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "turtles",          Title = "Learning to Swim",             Category = "Animals",               ThumbUrl = "images/turtles.jpg",         MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "afchapelroof",     Title = "Air Force Chapel - Ceiling",   Category = "Travel",                ThumbUrl = "images/afchapelroof.jpg",    MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "aspens",           Title = "Aspens in the Fall",           Category = "Nature",                ThumbUrl = "images/aspens.jpg",          MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "winter2",          Title = "Bitter Cold",                  Category = "Black and White, Nature",ThumbUrl = "images/winter2.jpg",        MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "winteralone",      Title = "Frosting Over",                Category = "Black and White, Nature",ThumbUrl = "images/winteralone.jpg",    MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "wintertree",       Title = "Tree all Alone",               Category = "Black and White, Nature",ThumbUrl = "images/wintertree.jpg",     MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "balloons",         Title = "Take Off",                     Category = "Travel, Nature",        ThumbUrl = "images/balloons.jpg",        MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "bird",             Title = "A Bird",                       Category = "Animals",               ThumbUrl = "images/bird.jpg",            MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "leaves",           Title = "Time to Fall",                 Category = "Nature",                ThumbUrl = "images/leaves.jpg",          MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "afchapelceiling",  Title = "Air Force Chapel - Ceiling 2", Category = "Travel",               ThumbUrl = "images/afchapelceiling.jpg", MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+        new() { Id = "balloon",          Title = "In Flight",                    Category = "Travel",                ThumbUrl = "images/balloon.jpg",         MediumUrl = "", OriginalUrl = "", Width = 200, Height = 200 },
+    ];
 
-    private IEnumerable<(string Title, string Category, string Src)> Filtered =>
-      active == "All" ? shots : shots.Where(s => s.Category.Split(',', StringSplitOptions.TrimEntries).Contains(active));
+    private IEnumerable<GalleryImage> Filtered =>
+        active == "All" ? shots : shots.Where(s => s.Category.Split(',', StringSplitOptions.TrimEntries).Contains(active));
 
     private string[] tabs = ["All", "Black and White", "Nature", "Animals", "Travel"];
 }
